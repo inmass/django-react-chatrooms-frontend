@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { Link as RouterLink } from 'react-router-dom'
 
 const RegisterPage = () => {
     // get the loginUser function from the context
@@ -135,13 +136,14 @@ const RegisterPage = () => {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        {...(username && password && passwordConfirmation ? {} : {disabled: true})}
                         >
                         Register
                         </Button>
                     }
                     <Grid container>
                         <Grid item>
-                            <Link to="/login" variant="body2">
+                            <Link component={RouterLink} to="/login" variant="body2">
                             Have an account? Login
                             </Link>
                         </Grid>
