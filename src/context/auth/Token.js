@@ -23,13 +23,15 @@ const handleLogin = async (username, password, setUser, setAuthTokens, setMessag
         setAuthTokens(data);
         // save the authTokens in the localStorage
         localStorage.setItem('authTokens', JSON.stringify(data));
-        setMessage('Successfully logged in!')
+        // setMessage('Successfully logged in!')
+        setMessage({detail: 'Successfully logged in!', type: 'success'});
 
         return "success";
 
     } else {
 
-        setMessage(data.detail);
+        // setMessage(data.detail);
+        setMessage({detail: data.detail, type: 'error'});
         return data.detail;
 
     }
@@ -54,7 +56,8 @@ const handleRegister = async (username, password, password_confirmation, setUser
     // if the response is 201, set the user and authTokens in the context
     if (response.status === 201) {
         // login the user
-        setMessage('Successfully registered! logging in...');
+        // setMessage('Successfully registered! logging in...');
+        setMessage({detail: 'Successfully registered! logging in...', type: 'success'});
         // wait 5 seconds before logging in
         setTimeout(() => {
             handleLogin(username, password, setUser, setAuthTokens, setMessage);
@@ -64,17 +67,20 @@ const handleRegister = async (username, password, password_confirmation, setUser
     } else {
         if (data.username) {
 
-            setMessage(data.username[0]);
+            // setMessage(data.username[0]);
+            setMessage({detail: data.username[0], type: 'error'});
             return data.username[0];
 
         } else if (data.password) {
 
-            setMessage(data.password[0]);
+            // setMessage(data.password[0]);
+            setMessage({detail: data.password[0], type: 'error'});
             return data.password[0];
 
         } else {
 
-            setMessage('Something went wrong. Please try again.');
+            // setMessage('Something went wrong. Please try again.');
+            setMessage({detail: 'Something went wrong. Please try again.', type: 'error'});
             return 'Something went wrong. Please try again.';
 
         }
@@ -94,7 +100,8 @@ const handleRefreshTokens = async (authTokens, setAuthTokens, setUser, setMessag
     })
     // catch the error if the refresh token is invalid and logout the user
     .catch(() => {
-        setMessage('Your session has expired. Please login again.');
+        // setMessage('Your session has expired. Please login again.');
+        setMessage({detail: 'Your session has expired. Please login again.', type: 'error'});
         handleLogout(setUser, setAuthTokens)
     });
 
@@ -115,7 +122,8 @@ const handleRefreshTokens = async (authTokens, setAuthTokens, setUser, setMessag
     // if the response is 401, meaning the refresh token is invalid, logout the user
     else if(response.status === 401){
 
-        setMessage('Your session has expired. Please login again.');
+        // setMessage('Your session has expired. Please login again.');
+        setMessage({detail: 'Your session has expired. Please login again.', type: 'error'});
         handleLogout(setUser, setAuthTokens)
         return false;
 
@@ -129,7 +137,8 @@ const handleLogout = (setUser, setAuthTokens, setMessage) => {
     setUser(null);
     setAuthTokens(null);
     localStorage.removeItem('authTokens');
-    setMessage('You have been logged out.');
+    // setMessage('You have been logged out.');
+    setMessage({detail: 'You have been logged out.', type: 'success'});
 
     return true;
 
