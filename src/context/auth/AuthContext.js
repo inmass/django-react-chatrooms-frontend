@@ -1,6 +1,6 @@
 import jwt_decode from "jwt-decode";
 import { createContext, useState, useEffect, useCallback } from "react";
-import { handleLogin, handleLogout, handleRefreshTokens } from "@context/auth/Token";
+import { handleLogin, handleRegister, handleLogout, handleRefreshTokens } from "@context/auth/Token";
 
 const AuthContext = createContext();
 
@@ -15,9 +15,15 @@ export const AuthProvider = ({ children }) => {
     const [message, setMessage] = useState(null);
 
     // login function
-    const loginUser = async (email, password) => {
+    const loginUser = async (username, password) => {
         setMessage(null);
-        return handleLogin(email, password, setUser, setAuthTokens, setMessage);
+        return handleLogin(username, password, setUser, setAuthTokens, setMessage);
+    }
+
+    // register function
+    const registerUser = async (username, password, password_confirmation) => {
+        setMessage(null);
+        return handleRegister(username, password, password_confirmation, setUser, setAuthTokens, setMessage);
     }
 
     // logout function
@@ -63,6 +69,7 @@ export const AuthProvider = ({ children }) => {
 
     const contextData = {
         loginUser,
+        registerUser,
         logoutUser,
         user,
         authTokens,

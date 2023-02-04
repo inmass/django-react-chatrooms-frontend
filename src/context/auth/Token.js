@@ -1,8 +1,8 @@
-import {loginEndpoint, refreshEndpoint} from "@context/auth/DefaultConfig";
+import {loginEndpoint, registerEndpoint, refreshEndpoint} from "@context/auth/DefaultConfig";
 import jwt_decode from "jwt-decode";
 
 // handleLogin function to login the user
-const handleLogin = async (email, password, setUser, setAuthTokens, setMessage) => {
+const handleLogin = async (username, password, setUser, setAuthTokens, setMessage) => {
     
     // send a POST request to the login endpoint
     const response = await fetch( loginEndpoint, {
@@ -10,7 +10,7 @@ const handleLogin = async (email, password, setUser, setAuthTokens, setMessage) 
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
     });
 
     // convert the response to json
@@ -34,6 +34,51 @@ const handleLogin = async (email, password, setUser, setAuthTokens, setMessage) 
 
     }
 
+}
+
+// handleRegister function to register the user
+const handleRegister = async (username, password, password_confirmation, setUser, setAuthTokens, setMessage) => {
+
+    // send a POST request to the register endpoint
+    const response = await fetch( registerEndpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, password_confirmation }),
+    });
+
+    // convert the response to json
+    const data = await response.json();
+
+    // if the response is 201, set the user and authTokens in the context
+    if (response.status === 201) {
+        // login the user
+        setMessage('Successfully registered! logging in...');
+        // wait 5 seconds before logging in
+        setTimeout(() => {
+            handleLogin(username, password, setUser, setAuthTokens, setMessage);
+        }, 5000);
+
+        return "success";
+    } else {
+        if (data.username) {
+
+            setMessage(data.username[0]);
+            return data.username[0];
+
+        } else if (data.password) {
+
+            setMessage(data.password[0]);
+            return data.password[0];
+
+        } else {
+
+            setMessage('Something went wrong. Please try again.');
+            return 'Something went wrong. Please try again.';
+
+        }
+    }
 }
 
 // handleRefreshTokens function to refresh the tokens
@@ -90,4 +135,4 @@ const handleLogout = (setUser, setAuthTokens, setMessage) => {
 
 }
 
-export { handleLogin, handleLogout, handleRefreshTokens }
+export { handleLogin, handleRegister, handleLogout, handleRefreshTokens }

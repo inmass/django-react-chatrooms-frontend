@@ -13,6 +13,14 @@ const myRoutes = [
         }
     },
     {
+        path: '/register',
+        component: <Pages.RegisterPage/>,
+        publicRoute: true,
+        meta: {
+            authRoute: true
+        }
+    },
+    {
         path: '/home',
         component: <Pages.HomePage/>,
         defaultRoute: true,

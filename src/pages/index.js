@@ -2,5 +2,6 @@
 import NotFound from '@pages/NotFound.js'
 import HomePage from '@pages/HomePage.js'
 import LoginPage from '@pages/LoginPage.js'
+import RegisterPage from '@pages/RegisterPage.js'
 
-export { HomePage, LoginPage, NotFound }
+export { HomePage, LoginPage, NotFound, RegisterPage }

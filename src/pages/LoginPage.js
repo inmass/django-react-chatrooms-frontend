@@ -11,8 +11,8 @@ const LoginPage = () => {
 
   // get the loginUser function from the context
   const { loginUser, message } = useAuth()
-  // set the email, password, error and loading states
-  const [email, setEmail] = useState('')
+  // set the username, password, error, loading and collapseOpen states
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [collapseOpen, setCollapseOpen] = useState(true);
@@ -24,7 +24,7 @@ const LoginPage = () => {
 
     setLoading(true)
 
-    await loginUser(email, password)
+    await loginUser(username, password)
 
     setLoading(false)
 
@@ -62,7 +62,7 @@ const LoginPage = () => {
           null
         }
         <form action="" method="post" onSubmit={handleSubmit}>
-            <input type="email" name="email" id="email" placeholder='email' onChange={(e) => setEmail(e.target.value)} />
+            <input type="text" name="username" id="username" placeholder='username' onChange={(e) => setUsername(e.target.value)} />
             <input type="password" name="password" id="password" placeholder='password' onChange={(e) => setPassword(e.target.value)} />
             {
               loading ?
