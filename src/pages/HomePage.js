@@ -16,8 +16,20 @@ let HomePage = () => {
   const { authTokens, logoutUser } = useAuth()
   const [rooms, setRooms] = useState([])
   const [loading, setLoading] = useState(true)
-  const [roomContainer, setRoomContainer] = useState(<></>)
   const [selectedRoom, setSelectedRoom] = useState(null)
+  const [roomContainer, setRoomContainer] = useState(
+    <Typography
+      variant="h4"
+      component="div"
+      sx={{ 
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      Select a room to start chatting!
+    </Typography>
+  )
 
   const chatRoomContainer = (room, rooms) => {
     let messagesObject = {}
@@ -47,9 +59,6 @@ let HomePage = () => {
 
   return (
     <Container component="main">
-      <Typography component="h1" variant="h4" align="center">
-        Welcome to Django React chatrooms!
-      </Typography>
       <Box
         sx={{
           display: 'flex',
