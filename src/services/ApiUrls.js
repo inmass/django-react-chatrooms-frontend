@@ -1,5 +1,5 @@
 const apiUrls = {
-    // apiUrls for the application here
+    getRooms: "api/rooms/",
 }
 
 export { apiUrls }

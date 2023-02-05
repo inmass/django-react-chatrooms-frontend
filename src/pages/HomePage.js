@@ -1,8 +1,136 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import useAuth from '@context/auth/useAuth'
+import { apiUrls } from '@services/ApiUrls'
+import { get } from '@services/Request'
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { RoomContainer } from '@components';
 
-const HomePage = () => {
+let HomePage = () => {
+
+  const { authTokens, logoutUser } = useAuth()
+  const [rooms, setRooms] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [roomContainer, setRoomContainer] = useState(<></>)
+  const [selectedRoom, setSelectedRoom] = useState(null)
+
+  const chatRoomContainer = (room, rooms) => {
+    let messagesObject = {}
+    rooms.forEach((room, index) => {
+      messagesObject[room.slug] = []
+    })
+    setRoomContainer(
+      <RoomContainer room={room} messagesObject={messagesObject} />
+    )
+    setSelectedRoom(room)
+  }  
+
+  useEffect(() => {
+
+    const getRooms = async () => {
+      const response = await get(apiUrls.getRooms, authTokens, logoutUser)
+      
+      if (response) {
+        setRooms(response)
+        setLoading(false)
+      }
+    }
+
+    getRooms()
+
+  }, [authTokens, logoutUser])
+
   return (
-    <h1>Logged in to the home page!</h1>
+    <Container component="main">
+      <Typography component="h1" variant="h4" align="center">
+        Welcome to Django React chatrooms!
+      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          width: '100%',
+          bgcolor: 'background.paper',
+          marginTop: '50px',
+        }}
+      >
+        <Box
+          sx = {{
+            width: '30%',
+            bgcolor: 'background.paper',
+            paddingRight: '15px',
+            height: 'inherit',
+            borderRight: '1px solid #e0e0e0',
+          }}
+        > 
+          <List>
+            {
+              !loading ?
+
+              rooms.map((item, index) => (
+                  <ListItem
+                    key={index}
+                    disablePadding
+                    sx={{
+                      borderBottom: '1px solid #e0e0e0',
+                      '&:hover': {
+                        // nice blue color
+                        backgroundColor: '#e3f2fd',
+                        cursor: 'pointer'
+                      }
+                    }}
+                    {...(selectedRoom && selectedRoom.slug === item.slug ?
+                      {
+                        sx: {
+                          backgroundColor: '#e3f2fd',
+                        }
+                      } : {})
+                    }
+                  >
+                    <ListItemButton
+                      onClick={() => chatRoomContainer(item, rooms)}
+                    >
+                        <ListItemText
+                          primary={item.name}
+                        />
+                    </ListItemButton>
+                  </ListItem>
+              )) :
+
+              <ListItem
+                key={1}
+                disablePadding
+                sx={{
+                  borderBottom: '1px solid #e0e0e0',
+                  backgroundColor: '#fafafa'
+                }}
+              >
+                  <ListItemButton>
+                      <ListItemText
+                        primary="Loading..."
+                      />
+                  </ListItemButton>
+              </ListItem>
+            }
+          </List>
+        </Box>  
+        <Box
+          sx={{
+            width: '80%'
+          }}
+        >
+          {roomContainer}
+        </Box>
+      </Box>
+        
+    </Container>
   )
 }
 

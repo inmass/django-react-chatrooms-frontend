@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
             // refresh the tokens every 89 minutes
             let interval = setInterval(() => {
-                if (authTokens) {
+                if (authTokens && !loading) {
                     refreshTokens();
                 }
             }, 89 * 60 * 1000);
