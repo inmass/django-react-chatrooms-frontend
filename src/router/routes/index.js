@@ -1,4 +1,5 @@
 import * as Pages from "@pages";
+import { Navigate } from "react-router-dom";
 
 // Routes array
 const myRoutes = [
@@ -24,6 +25,14 @@ const myRoutes = [
         path: '/home',
         component: <Pages.HomePage/>,
         defaultRoute: true,
+    },
+    {
+        path: '/create-room',
+        component: <Pages.CreateRoom/>,
+    },
+    {
+        path: '/',
+        component: <Navigate to="/home" />,
     },
     {
         path: '*',

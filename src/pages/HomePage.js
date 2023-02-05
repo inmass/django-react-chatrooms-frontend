@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { RoomContainer } from '@components';
+import { Link } from 'react-router-dom'
 
 let HomePage = () => {
 
@@ -128,6 +129,25 @@ let HomePage = () => {
                   </ListItemButton>
               </ListItem>
             }
+            {/* create new room button */}
+            <ListItem
+              key={2}
+              disablePadding
+              sx={{
+                borderBottom: '1px solid #e0e0e0',
+                backgroundColor: '#e8f5e9',
+              }}
+            >
+                <ListItemButton
+                  component={Link}
+                  to="/create-room"
+                >
+                    <ListItemText
+                      primary="Or create your own room!"
+                    />
+                </ListItemButton>
+            </ListItem>
+
           </List>
         </Box>  
         <Box
