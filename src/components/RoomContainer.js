@@ -111,6 +111,8 @@ const RoomContainer = ({ room, messagesObject }) => {
                   backgroundColor: 'rgba(0,0,0,.1)',
                 },
               }}
+              // always scroll to bottom when new message is received
+              ref={ref => ref && ref.scrollTo(0, ref.scrollHeight)}
             >
               {
                 chatMessages[room.slug].length > 0 ?
